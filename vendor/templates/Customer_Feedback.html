@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Feedback</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    :root {
+        --primary: #1D4ED8;  /* More professional blue */
+        --secondary: #3B82F6; /* Brighter accent blue */
+        --accent: #F59E0B;    /* Warm rating color */
+        --text: #1E293B;      /* Dark text */
+        --background: #F8FAFC; /* Light background */
+        --surface: #FFFFFF;    /* Card background */
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: var(--background);
+        padding: 2rem;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    .header {
+        background: linear-gradient(135deg, var(--primary), #3B82F6);
+        padding: 2rem;
+        border-radius: 1rem;
+        color: white;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .header h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .stats-container {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 1rem;
+    }
+
+    .stat-box {
+        background: rgba(255,255,255,0.15);
+        padding: 1rem 1.5rem;
+        border-radius: 0.75rem;
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+    }
+
+    /* Back Button */
+    .back-button {
+        display: inline-block;
+        margin-bottom: 1rem;
+        padding: 0.5rem 1rem;
+        background: var(--primary);
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-weight: bold;
+        transition: background 0.2s ease;
+    }
+
+    .back-button:hover {
+        background: var(--secondary);
+    }
+
+    /* Review Section as a Modal */
+    .reviews-modal {
+        background: var(--surface);
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .review-card {
+        background: #fff;
+        border: 1px solid #E2E8F0;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        transition: all 0.2s ease;
+    }
+
+    .review-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--secondary);
+        box-shadow: 0 5px 10px rgba(59,130,246,0.1);
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 500;
+        font-size: 1.2rem;
+    }
+
+    .rating-stars {
+        display: flex;
+        gap: 0.25rem;
+        font-size: 1rem;
+        color: var(--accent);
+    }
+
+    .review-content {
+        color: #475569;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .review-date {
+        font-size: 0.875rem;
+        color: #64748B;
+        text-align: right;
+    }
+
+    .no-reviews {
+        text-align: center;
+        padding: 2rem;
+        border: 2px dashed #E2E8F0;
+        border-radius: 1rem;
+    }
+
+    .no-reviews i {
+        font-size: 2.5rem;
+        color: #CBD5E1;
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .stats-container {
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <!-- Back Button -->
+        <a href="javascript:history.back()" class="back-button"><i class="fas fa-arrow-left"></i> Back</a>
+
+        <div class="header">
+            <h2>Customer Feedback</h2>
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div class="stat-number">{{ customer_feedback|length }}</div>
+                    <div class="stat-label">Verified Reviews</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">{{ vendor_feedback.total_review }}</div>
+                    <div class="stat-label">Total Reviews</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Reviews Section -->
+        <div class="reviews-modal">
+            {% if customer_feedback %}
+                {% for review in customer_feedback %}
+                    <div class="review-card">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                {{ review.user.first_name|slice:":1" }}
+                            </div>
+                            <div>
+                                <strong>{{ review.user.first_name }}</strong>
+                                <div class="rating-stars">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= review.rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <p class="review-content">{{ review.review }}</p>
+                        {% if review.created_at %}
+                            <div class="review-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                {{ review.created_at|date:"M d, Y" }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-reviews">
+                    <i class="fas fa-comment-slash"></i>
+                    <h3>No reviews yet</h3>
+                    <p>Be the first to share your experience!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ selected_vendor.vendor_name }} | Booking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Add font-awesome CDN in your actual project */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(45deg, #0f172a, #1e293b);
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        .vendor-header {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2.5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .vendor-avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #38bdf8;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .vendor-info {
+            flex: 1;
+        }
+
+        .vendor-info h1 {
+            font-size: 2.8rem;
+            color: #38bdf8;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .vendor-meta {
+            display: flex;
+            gap: 2.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.1rem;
+            color: #94a3b8;
+            background: rgba(255,255,255,0.03);
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+        }
+
+        .meta-item i {
+            color: #38bdf8;
+            font-size: 1.2rem;
+        }
+
+        .pricing-section {
+            margin: 3rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2.5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+
+        .pricing-table th,
+        .pricing-table td {
+            padding: 1.25rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .pricing-table th {
+            background: #1e3a8a;
+            color: #bfdbfe;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        .pricing-table tr:nth-child(even) {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .pricing-table td {
+            color: #e2e8f0;
+            font-weight: 300;
+        }
+
+        .tabs-container {
+            margin: 3rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .tabs-nav {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            background: rgba(255,255,255,0.08);
+            color: #94a3b8;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-btn.active {
+            background: #1e3a8a;
+            color: #bfdbfe;
+        }
+
+        .tab-btn:not(.active):hover {
+            background: rgba(255,255,255,0.12);
+            color: #e2e8f0;
+        }
+
+        .artist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .artist-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .artist-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        .artist-photo {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 2px solid #38bdf8;
+        }
+
+        .artist-info {
+            padding: 1.5rem;
+        }
+
+        .artist-info h3 {
+            color: #38bdf8;
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .artist-info p {
+            color: #94a3b8;
+            margin: 0.4rem 0;
+            font-size: 0.95rem;
+        }
+
+        .performance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .performance-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .media-container {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .media-container img,
+        .media-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .media-container:hover img {
+            transform: scale(1.05);
+        }
+
+        .youtube-thumbnail {
+            position: relative;
+            display: block;
+        }
+
+        .youtube-thumbnail::after {
+            content: "▶";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: white;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            opacity: 0.9;
+        }
+
+        .event-title {
+            color: #e2e8f0;
+            padding: 1rem;
+            font-size: 1.1rem;
+            text-align: center;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .book-now-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1.25rem 2.5rem;
+            background: linear-gradient(135deg, #38bdf8, #1e3a8a);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(56, 189, 248, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .book-now-btn:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 12px 32px rgba(56, 189, 248, 0.4);
+        }
+
+        /* Tab Content Styles */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+            .review-card {
+        background: linear-gradient(145deg, rgba(56, 189, 248, 0.1), rgba(30, 58, 138, 0.1));
+        padding: 1.5rem;
+        border-radius: 15px;
+        border: 2px solid rgba(56, 189, 248, 0.2);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .review-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(56, 189, 248, 0.1);
+    }
+
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .review-user {
+        color: #38bdf8;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .stars {
+        display: flex;
+        gap: 0.3rem;
+    }
+
+    .star {
+        color: #ffd700;
+        font-size: 0.9rem;
+    }
+
+    .review-content {
+        color: #cbd5e1;
+        line-height: 1.6;
+        font-size: 0.95rem;
+        position: relative;
+    }
+
+    .review-content::before {
+        content: "“";
+        position: absolute;
+        top: -0.5rem;
+        left: -0.5rem;
+        font-size: 2rem;
+        color: rgba(56, 189, 248, 0.3);
+        font-family: serif;
+    }
+
+    .review-date {
+        display: block;
+        margin-top: 1rem;
+        font-size: 0.8rem;
+        color: #94a3b8;
+        text-align: right;
+    }
+
+    /* Add this to existing media query */
+    @media (max-width: 768px) {
+        .review-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+    }
+
+        @media (max-width: 768px) {
+            .vendor-header {
+                flex-direction: column;
+                text-align: center;
+                padding: 1.5rem;
+            }
+
+            .vendor-avatar {
+                width: 150px;
+                height: 150px;
+            }
+
+            .vendor-meta {
+                justify-content: center;
+            }
+
+            .tabs-nav {
+                flex-direction: column;
+            }
+
+            .tab-btn {
+                width: 100%;
+            }
+
+            .book-now-btn {
+                width: calc(100% - 2rem);
+                bottom: 1rem;
+                right: 1rem;
+                justify-content: center;
+                padding: 1rem;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Vendor Header -->
+        <div class="vendor-header">
+            <img src="{{ selected_vendor.group_photo.url }}" alt="Vendor Photo" class="vendor-avatar">
+            <div class="vendor-info">
+                <h1>{{ selected_vendor.group_name }}</h1>
+                <div class="vendor-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-user"></i>
+                        {{ selected_vendor.vendor_name }}
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-phone"></i>
+                        {{ selected_vendor.phone }}
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-envelope"></i>
+                        {{ selected_vendor.user.email }}
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        {{ selected_vendor.address }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pricing Section -->
+        <div class="pricing-section">
+            <h2 style="color: #38bdf8; margin-bottom: 2rem; text-align: center; font-weight: 600;">Service Packages</h2>
+            <table class="pricing-table">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>10 People</th>
+                        <th>15 People</th>
+                        <th>20 People</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for service in service_select %}
+                    <tr>
+                        <td>{{ service.service.name }}</td>
+                        <td>₹{{ service.price_10_members }}</td>
+                        <td>₹{{ service.price_15_members }}</td>
+                        <td>₹{{ service.price_20_members }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Tabs Section -->
+        <div class="tabs-container">
+            <div class="tabs-nav">
+                <button class="tab-btn active" data-tab="artists">Artists</button>
+                <button class="tab-btn" data-tab="performances">Performances</button>
+                <button class="tab-btn" data-tab="reviews">Reviews</button>
+            </div>
+
+            <!-- Artists Tab Content -->
+            <div id="artists" class="tab-content active">
+                <div class="artist-grid">
+                    {% if artist %}
+                        {% for ar in artist %}
+                        <div class="artist-card">
+                            {% if ar.artist_photo %}
+                                <img src="{{ ar.artist_photo.url }}" alt="Artist Photo" class="artist-photo">
+                            {% else %}
+                                <img src="/static/images/default.jpg" alt="Default Photo" class="artist-photo">
+                            {% endif %}
+                            <div class="artist-info">
+                                <h3>{{ ar.artist_name }}</h3>
+                                <p>Instrument: {{ ar.instrument_name }}</p>
+                                <p>Rate: ₹{{ ar.price }}/hour</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="no-artists" style="color: #94a3b8; text-align: center; padding: 2rem;">
+                            <h3>No Artists Available</h3>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Performances Tab Content -->
+            <div id="performances" class="tab-content">
+                {% if performance %}
+                <div class="performance-grid">
+                    {% for ar in performance %}
+                    <div class="performance-card">
+                        <div class="media-container">
+                            {% if ar.youtube_url %}
+                                <a href="{{ ar.youtube_url }}" class="youtube-thumbnail" target="_blank">
+                                    <img src="https://img.youtube.com/vi/{{ ar.youtube_url|slice:'-11:' }}/hqdefault.jpg"
+                                         alt="YouTube Video Thumbnail" class="artist-photo">
+                                </a>
+                            {% elif ar.performance %}
+                                {% if ar.performance.url|lower|slice:"-4:" == ".jpg" or ar.performance.url|lower|slice:"-4:" == ".png" or ar.performance.url|lower|slice:"-5:" == ".jpeg" %}
+                                    <img src="{{ ar.performance.url }}" alt="Performance Media" class="artist-photo">
+                                {% elif ar.performance.url|lower|slice:"-4:" == ".mp4" %}
+                                    <video controls class="artist-video">
+                                        <source src="{{ ar.performance.url }}" type="video/mp4">
+                                    </video>
+                                {% endif %}
+                            {% else %}
+                                <img src="/static/images/default.jpg" alt="Default Photo" class="artist-photo">
+                            {% endif %}
+                        </div>
+                        <h3 class="event-title">{{ ar.event }}</h3>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="no-performance" style="color: #94a3b8; text-align: center; padding: 2rem;">
+                    <h3>No Performances Added</h3>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Reviews Tab Content -->
+            <div id="reviews" class="tab-content">
+                <div class="review-grid">
+                    {% if review %}
+                        {% for review in review %}
+                        <div class="review-card">
+                            <div class="review-header">
+                                <span class="review-user">{{ review.user.first_name }}</span>
+                                <div class="stars">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= review.rating %}
+                                            <i class="fas fa-star star"></i>
+                                        {% else %}
+                                            <i class="far fa-star star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <p class="review-content">
+                                {{ review.review }}
+                                <span class="review-date">
+                                    {% if review.created_at %}
+                                        {{ review.created_at|date:"M d, Y" }}
+                                    {% endif %}
+                                </span>
+                            </p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="no-reviews" style="color: #94a3b8; text-align: center; padding: 2rem;">
+                            <h3>No Reviews Available</h3>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Book Button -->
+        <button class="book-now-btn" onclick="window.location.href='{% url 'book_now' selected_vendor.id %}'">
+            <i class="fas fa-calendar-check"></i>
+            Book Now
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const tabButtons = document.querySelectorAll(".tab-btn");
+            const tabContents = document.querySelectorAll(".tab-content");
+
+            function activateTab(tabId) {
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove("active"));
+                tabContents.forEach(content => {
+                    content.classList.remove("active");
+                    content.style.display = "none";
+                });
+
+                // Activate selected tab
+                const activeButton = document.querySelector(`[data-tab="${tabId}"]`);
+                const activeContent = document.getElementById(tabId);
+
+                if (activeButton && activeContent) {
+                    activeButton.classList.add("active");
+                    activeContent.classList.add("active");
+                    activeContent.style.display = "block";
+                }
+            }
+
+            // Tab button click handlers
+            tabButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const tabId = this.dataset.tab;
+                    activateTab(tabId);
+                });
+            });
+
+            // Activate initial tab
+            activateTab('artists');
+        });
+    </script>
+</body>
+</html>

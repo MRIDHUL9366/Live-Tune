@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Event Booking</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+  /* General Styles */
+body {
+    background: linear-gradient(135deg, #111827 0%, #1e293b 100%);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: #f8fafc;
+}
+
+/* Container */
+.container {
+    max-width: 900px;
+}
+
+/* Form Card */
+.form-card {
+    background: rgba(30, 41, 59, 0.9);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+}
+
+/* Headings */
+h1.display-5 {
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+}
+
+h4 {
+    color: #e2e8f0;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #8b5cf6;
+    margin-top: 1rem;
+}
+
+/* Form Labels */
+.form-label {
+    font-weight: 600;
+    color: #e2e8f0;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Input Fields */
+.form-control, .form-select {
+    background: #1e293b;
+    border: 1px solid #4b5563;
+    color: #f8fafc;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control::placeholder,
+.form-select option {
+    color: #94a3b8;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
+    background: #273449;
+}
+
+/* Hidden Custom Input */
+.custom-input {
+    display: none;
+    margin-top: 10px;
+    background: #1e293b;
+    border: 1px solid #4b5563;
+    color: #f8fafc;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #6366f1;
+    border-color: #6366f1;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #4f46e5;
+    border-color: #4f46e5;
+}
+
+/* Dropdown Options */
+.form-select option {
+    background: #1e293b;
+    color: #f8fafc;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .form-card {
+        padding: 1.5rem;
+    }
+
+    .btn-primary {
+        padding: 0.75rem;
+    }
+
+    .form-control, .form-select {
+        padding: 0.65rem;
+    }
+}
+        .text-muted {
+    color: #f8fafc !important; /* Ensures white text in dark mode */
+    opacity: 0.85; /* Slight transparency for a sleek effect */
+}
+
+.lead {
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+/* General message styling */
+.messages {
+    padding: 10px 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Success messages */
+.messages.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Error messages */
+.messages.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Warning messages */
+.messages.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+/* Info messages */
+.messages.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* Add some fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.messages {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-bold text-gradient mb-3">Event Booking</h1>
+            <p class="text-muted lead">Craft your perfect event with our premium services</p>
+        </div>
+                {% if messages %}
+            {% for message in messages %}
+                <div class="messages {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="col-lg-8 mx-auto">
+            <div class="form-card">
+                <h4 class="mb-4">{{vendor.group_name}}</h4>
+                <form id="bookingForm" action="{% url 'book_now' vendor.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                            <label class="form-label">Event Name</label>
+                            <input type="text" class="form-control form-control-lg"  name="event_name" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Venue Address</label>
+                            <textarea class="form-control" rows="3" name="venue_address" required></textarea>
+                        </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Service Package</label>
+                        <select class="form-select" id="serviceSelect" name="service_package" required>
+                            <option value="" disabled selected>Select service package</option>
+                            {% for i in service %}
+                                <option value="{{ i.id }}" data-price="{{ i.price_per_person }}">{{ i.service.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Number of People</label>
+                        <select class="form-select" id="peopleSelect" name="num_people">
+                            <option value="10">10 People</option>
+                            <option value="15">15 People</option>
+                            <option value="20">20 People</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                        <input type="number" id="customPeople" class="form-control custom-input" name="customPeople" placeholder="Enter custom members">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Event Duration (Hours)</label>
+                        <input type="number" class="form-control" id="hoursInput" min="1" value="1" name="event_duration" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Booking Date</label>
+                        <input type="datetime-local" class="form-control" id="dateInput" name="booking_date"  required>
+                    </div>
+
+                    <h5>Total Cost: ₹<span id="totalCost">0</span></h5>
+                    <input type="hidden" id="totalCostInput" name="Total_cost" value="">
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary w-100 py-3">Confirm Booking →</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateTotal() {
+            let serviceSelect = document.getElementById("serviceSelect");
+            let selectedService = serviceSelect.options[serviceSelect.selectedIndex];
+            let pricePerPerson = selectedService.dataset.price ? parseFloat(selectedService.dataset.price) : 0;
+            let peopleSelect = document.getElementById("peopleSelect");
+            let peopleCount = peopleSelect.value === "custom" ? parseInt(document.getElementById("customPeople").value) || 0 : parseInt(peopleSelect.value);
+            let hours = parseInt(document.getElementById("hoursInput").value) || 1;
+            let totalCost = pricePerPerson * peopleCount * hours;
+            document.getElementById("totalCost").innerText = totalCost;
+            document.getElementById("totalCostInput").value = totalCost;
+        }
+
+        document.getElementById("serviceSelect").addEventListener("change", calculateTotal);
+        document.getElementById("peopleSelect").addEventListener("change", function () {
+            document.getElementById("customPeople").style.display = this.value === "custom" ? "block" : "none";
+            calculateTotal();
+        });
+        document.getElementById("customPeople").addEventListener("input", calculateTotal);
+        document.getElementById("hoursInput").addEventListener("input", calculateTotal);
+
+        document.getElementById("bookingForm").addEventListener("submit", function (event) {
+    alert("Booking Confirmed! Total Cost: ₹" + document.getElementById("totalCost").innerText);
+    });
+
+    </script>
+</body>
+</html>

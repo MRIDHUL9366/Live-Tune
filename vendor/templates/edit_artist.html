@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Service</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #e6e6e6;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Container Styling */
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 25px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+            text-align: left;
+            border-top: 5px solid #b8860b;
+        }
+
+        h2 {
+            text-align: center;
+            color: #b8860b;
+            margin-bottom: 15px;
+        }
+
+        /* Image Styling */
+        img {
+            display: block;
+            width: 280px;
+            height:200px;
+            border-radius: 8px;
+            margin: 10px auto;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #b8860b;
+            box-shadow: 0 0 8px rgba(184, 134, 11, 0.3);
+            outline: none;
+        }
+
+        /* Button Styling */
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        button {
+            background-color: #b8860b;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 48%;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #9c740a;
+            transform: scale(1.05);
+        }
+
+        /* Back Button */
+        .btn-back {
+            background-color: #555;
+        }
+
+        .btn-back:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Edit Service</h2>
+
+    <!-- Display previous image -->
+    {% if artist_edit.artist_photo %}
+        <img src="{{ artist_edit.artist_photo.url }}" alt="Service Image">
+    {% endif %}
+
+    <form action="{% url 'edit_artist' artist_edit.id %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="id_name">Artist Name:</label>
+            <input type="text" id="id_name" name="name" value="{{ artist_edit.artist_name }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="id_instrument">Instrument:</label>
+            <input type="text" id="id_instrument" name="instrument" value="{{ artist_edit.instrument_name }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="id_price">Price:</label>
+            <input type="text" id="id_price" name="price" value="{{ artist_edit.price }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="id_image">Upload New Image:</label>
+            <input type="file" id="id_image" name="image">
+        </div>
+
+        <!-- Buttons -->
+        <div class="btn-container">
+            <button type="submit">Save Changes</button>
+            <button type="button" class="btn-back" onclick="window.history.back()">Back</button>
+        </div>
+
+    </form>
+</div>
+
+</body>
+</html>

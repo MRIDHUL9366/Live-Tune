@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Management - LiveTunes Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            background-color: #f5f6fa;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            position: fixed;
+        }
+
+        .logo {
+            font-size: 24px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .menu-item {
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .menu-item:hover {
+            background-color: #34495e;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 25px;
+            width: calc(100% - 250px);
+        }
+
+        /* Service Management Styles */
+        .management-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .service-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .service-table th,
+        .service-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .service-table th {
+            background: #34495e;
+            color: white;
+        }
+
+        .service-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .action-cell {
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit-btn {
+            color: #3498db;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            color: #e74c3c;
+            cursor: pointer;
+        }
+
+        /* Form Styles */
+        .service-form {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .back-btn {
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+                .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .table tbody tr:hover {
+            background-color: #e9ecef;
+        }
+
+
+        .service-form {
+            background: #f4f4f4;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .table th, .table td {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .table, .table thead, .table tbody, .table th, .table td, .table tr {
+                display: block;
+                width: 100%;
+            }
+
+            .table tr {
+                margin-bottom: 10px;
+                border-bottom: 2px solid #ddd;
+                padding-bottom: 10px;
+            }
+
+            .table th {
+                display: none;
+            }
+
+            .table td {
+                text-align: right;
+                position: relative;
+                padding-left: 50%;
+            }
+
+            .table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                width: 50%;
+                font-weight: bold;
+                text-align: left;
+            }
+        }
+             /* General message styling */
+.messages {
+    padding: 10px 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Success messages */
+.messages.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Error messages */
+.messages.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Warning messages */
+.messages.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+/* Info messages */
+.messages.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* Add some fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.messages {
+    animation: fadeIn 0.5s ease-in-out;
+}
+        .payment-success {
+    background-color: #2ecc71; /* Green */
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    display: inline-block;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+              /* Add these new styles for toggle buttons */
+        .toggle-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .toggle-btn {
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #3498db;
+            background: transparent;
+            color: #3498db;
+            font-weight: 600;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .toggle-btn.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+            box-shadow: 0 3px 8px rgba(52, 152, 219, 0.2);
+        }
+
+        .toggle-btn:not(.active):hover {
+            background: #f0f8ff;
+            transform: translateY(-1px);
+        }
+
+        .toggle-btn.active:hover {
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+           .total-earnings {
+        margin-left: auto;
+        background: #2ecc71;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 6px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .total-earnings i {
+        font-size: 1.2em;
+    }
+             /* Add these new styles */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .total-earnings {
+            background: #2ecc71;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 0.9em;
+            margin: 5px 0;
+        }
+
+        /* Adjust existing toggle-buttons */
+        .toggle-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding: 15px;
+            align-items: center;
+        }
+
+        /* Add table margin */
+        .table {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+     <!-- Sidebar -->
+   <div class="sidebar">
+            <div class="logo">LiveTunes Admin</div>
+
+            <div class="menu-item">
+                <a href="{% url 'admin_dashboard' %}" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="{% url 'manage_users' %}" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-users"></i> Manage Users
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="{% url 'manage_vendor' %}" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-store"></i> Manage Vendors
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="{% url 'manage_booking' %}" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-calendar-check"></i> Manage Bookings
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="{% url 'payment_refund' %}" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-wallet"></i> Payments & Refunds
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="{% url 'service_management' %}" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-cog"></i> Service Management
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="{% url 'add_announcement' %}" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-comments"></i> Announcement
+                </a>
+            </div>
+
+
+            <!--<div class="menu-item">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-user-cog"></i> Settings
+                </a>
+            </div>--->
+        </div>
+    <!-- Sidebar remains unchanged -->
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Payment & Commission Management</h1>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="messages {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Add toggle buttons -->
+        <div class="toggle-buttons">
+            <button class="toggle-btn active" onclick="showTable('booked')">
+                <i class="fas fa-calendar-check"></i> Booked
+            </button>
+            <button class="toggle-btn" onclick="showTable('cancelled')">
+                <i class="fas fa-times-circle"></i> Cancelled
+            </button>
+           <div class="total-earnings">
+              Total Earnings:{{total_amount.total_earnings}}
+          </div>
+        </div>
+
+        <!-- Booked Payments Table -->
+        <div class="service-form" id="bookedSection">
+             <div class="section-header">
+            <h2>Booked Payment Details</h2>
+            <div class="total-earnings">
+                Booking Charge: ₹{{total_amount.booking_earnings}}
+            </div>
+           </div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>User Name</th>
+                    <th>Event Name</th>
+                    <th>Service Name</th>
+                    <th>Vendor Name</th>
+                     <th>Amount Paid</th>
+                    <th>Service Charge</th>
+                    <th>Vendor Earned</th>
+                    <th>Vendor Payment Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+        <tr>
+            <td>{{ booking.user.first_name }}</td>
+            <td>{{ booking.event_name }}</td>
+            <td>{{ booking.select_service.service.name }}</td>
+            <td>{{ booking.vendor.vendor_name }}</td>
+            <td>₹{{ booking.total_amount }}</td>
+            <td>₹{{ booking.commission_amount }}</td>  <!-- Commission -->
+            <td>₹{{ booking.vendor_amount }}</td>  <!-- Vendor Earnings -->  <!-- Vendor Earnings -->
+            <td class="action-btns">
+                    {% if booking.admin_approval == 'Release' %}
+                        <span class="status approved">
+                            <i class="fas fa-check-circle"></i> Payment Released
+                        </span>
+                    {% else %}
+                        <form action="{% url 'payment_approved' booking.id %}" method="post">
+                            {% csrf_token %}
+                             <input type="hidden" name="commission_amount" value="{{ booking.commission }}">
+                            <button type="submit" class="btn accept-btn">
+                                <i class="fas fa-check"></i> Release
+                            </button>
+                        </form>
+                    {% endif %}
+                </td>
+
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">No paid users found.</td>
+        </tr>
+        {% endfor %}
+
+            </tbody>
+        </table>
+
+        </div>
+
+        <!-- Cancelled Payments Table (hidden by default) -->
+        <div class="service-form" id="cancelledSection" style="display: none;">
+            <div class="section-header">
+            <h2>Cancelled Bookings</h2>
+            <div class="total-earnings">
+                Cancellation Charge: ₹{{total_amount.cancel_earnings}}
+            </div>
+           </div>
+
+            <table class="table">
+                <thead>
+        <tr>
+            <th>User Name</th>
+            <th>Event Name</th>
+            <th>Service Name</th>
+            <th>Vendor Name</th>
+             <th>Amount Paid</th>
+            <th>Cancellation charge</th>
+            <th>user Return</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for booking in cancel_bookings %}
+<tr>
+    <td>{{ booking.user.first_name }}</td>
+    <td>{{ booking.event_name }}</td>
+    <td>{{ booking.select_service.service.name }}</td>
+    <td>{{ booking.vendor.vendor_name }}</td>
+    <td>₹{{ booking.total_amount }}</td>
+    <td>₹{{ booking.commission_amount }}</td>  <!-- Commission -->
+    <td>₹{{ booking.user_amount }}</td>  <!-- Vendor Earnings -->  <!-- Vendor Earnings -->
+
+</tr>
+{% empty %}
+<tr>
+    <td colspan="7">No cancelled users found.</td>
+</tr>
+{% endfor %}
+
+    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function showTable(tableType) {
+            const bookedSection = document.getElementById('bookedSection');
+            const cancelledSection = document.getElementById('cancelledSection');
+            const bookedBtn = document.querySelector('[onclick="showTable(\'booked\')"]');
+            const cancelledBtn = document.querySelector('[onclick="showTable(\'cancelled\')"]');
+
+            if (tableType === 'booked') {
+                bookedSection.style.display = 'block';
+                cancelledSection.style.display = 'none';
+                bookedBtn.classList.add('active-btn');
+                cancelledBtn.classList.remove('active-btn');
+            } else {
+                bookedSection.style.display = 'none';
+                cancelledSection.style.display = 'block';
+                bookedBtn.classList.remove('active-btn');
+                cancelledBtn.classList.add('active-btn');
+            }
+        }
+    </script>
+</body>
+</html>

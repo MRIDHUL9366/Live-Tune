@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Management - Live Tune</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 30px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #1e293b;
+            position: relative;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #3b82f6;
+            color: white !important;
+            padding: 5px 5px;
+            border-radius:8px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+
+        }
+
+        .back-btn:hover {
+            background: #2563eb;
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 6px rgba(59,130,246,0.3);
+        }
+
+        /* Artist List Section */
+        .artist-list {
+            flex: 1.5;
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+        }
+
+        .artist-card {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .artist-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        .artist-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 25px;
+            border: 3px solid #e2e8f0;
+            transition: transform 0.3s ease;
+        }
+
+        .artist-info h3 {
+            margin-bottom: 8px;
+            color: #1e293b;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+
+        .artist-info p {
+            color: #64748b;
+            font-size: 1em;
+            margin: 4px 0;
+        }
+
+        /* Management Section */
+        .management-section {
+            flex: 1;
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        input, select, button {
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: #3b82f6;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+        }
+
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        button:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(59,130,246,0.2);
+        }
+
+        .action-buttons {
+            margin-left: auto;
+            display: flex;
+            gap: 15px;
+        }
+
+        .edit-btn {
+            background: #10b981;
+        }
+
+        .edit-btn:hover {
+            background: #059669;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+        }
+
+        .form-group label {
+            color: #475569;
+            font-weight: 500;
+            font-size: 0.95em;
+            padding-left: 4px;
+        }
+
+        /* File Upload Customization */
+        input[type="file"] {
+            padding: 12px;
+            background: #f8fafc;
+            border: 2px dashed #e2e8f0;
+        }
+
+        input[type="file"]::-webkit-file-upload-button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        input[type="file"]::-webkit-file-upload-button:hover {
+            background: #2563eb;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .artist-list {
+                max-height: none;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+                padding: 0 60px;
+            }
+
+            .back-btn {
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2 class="header">
+        <a href="{% url 'vendor_dashboard' %}" class="back-btn">← Back</a>
+        <span style="font-size:25px;">Artist Management - LiveTune</span>
+    </h2>
+
+    <div class="container">
+        <!-- Artist List Section -->
+        <div class="artist-list">
+            <h2 style="margin-bottom: 25px; color: #1e293b; border-bottom: 2px solid #3b82f6; padding-bottom: 12px;">
+                {{vendor.group_name}} - Artist Roster
+            </h2>
+            <!-- Artist Cards (Repeat as needed) -->
+            {% if artist %}
+            {% for ar in artist %}
+            <div class="artist-card">
+                {% if ar.artist_photo %}
+                    <img src="{{ ar.artist_photo.url }}" alt="Artist Photo" class="artist-photo">
+                {% else %}
+                    <img src="/static/images/default.jpg" alt="Default Photo" class="artist-photo">
+                {% endif %}
+
+                <div class="artist-info">
+                    <h3>Name:{{ar.artist_name}}</h3>
+                    <p>Instrument: {{ar.instrument_name}}</p>
+                    <p>Pay Rate: {{ar.price}}/hour</p>
+                </div>
+                <div class="action-buttons">
+                    <button class="edit-btn" onclick="window.location.href='{% url 'edit_artist' ar.id %}'">Edit</button>
+                    <button class="delete-btn" onclick="confirmDelete('{% url 'delete_artist' ar.id %}')">Delete</button>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div>
+                <h1>No value add artist</h1>
+            </div>
+            {% endif %}
+
+
+            <!-- Repeat artist cards here -->
+        </div>
+
+        <!-- Management Section -->
+        <div class="management-section">
+            <h2 style="margin-bottom: 25px; color: #1e293b; border-bottom: 2px solid #3b82f6; padding-bottom: 12px;">
+                Add New Artist
+            </h2>
+            <form id="artistForm" action="{% url 'artist_management' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Artist Name:</label>
+                    <input type="text" name="artist_name" required placeholder="Enter artist name">
+                </div>
+
+                <div class="form-group">
+                    <label>Instrument:</label>
+                    <input type="text" name="instrument" required placeholder="Enter primary instrument">
+                </div>
+
+                <div class="form-group">
+                    <label>Pay Rate </label>
+                    <input type="number"  name="rate" required placeholder="Enter pay rate">
+                </div>
+
+                <div class="form-group">
+                    <label>Artist Photo:</label>
+                    <input type="file" name="photo" accept="image/*">
+                </div>
+
+                <button type="submit" style="margin-top: 10px;">Save Artist</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+          function confirmDelete(url) {
+        if (confirm("Are you sure you want to delete this artist?")) {
+            window.location.href = url;
+        }
+       }
+
+
+
+    </script>
+</body>
+</html>

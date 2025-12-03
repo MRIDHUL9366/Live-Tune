@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Service</title>
+    <style>
+        /* Simplified Modern Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #34495e;
+            font-weight: 500;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #bdc3c7;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
+        }
+
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .custom-file-input {
+            display: inline-block;
+            padding: 0.6rem 1rem;
+            background: #3498db;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .custom-file-input:hover {
+            background: #2980b9;
+        }
+
+        .preview {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 6px;
+            border: 1px solid #ecf0f1;
+            margin-top: 1rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #219a52;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Add New Service</h2>
+        <form action="{% url 'add_service' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Service Name</label>
+                <input type="text" id="name" name="name" required placeholder="Enter service name">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="4" required
+                    placeholder="Describe the service..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Service Image</label>
+                <div class="file-upload">
+                    <input type="file" id="photo" name="photo" accept="image/*" onchange="previewImage(event)">
+                    <label class="custom-file-input" for="photo">
+                        Choose File
+                    </label>
+                    <span id="file-name" style="margin-left: 1rem; color: #7f8c8d;">No file chosen</span>
+                </div>
+            </div>
+
+            <div class="preview">
+                <img id="preview-img" src="#" alt="Image Preview">
+            </div>
+
+            <button type="submit">Add Service</button>
+        </form>
+    </div>
+
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            const fileName = document.getElementById('file-name');
+            const previewImg = document.getElementById('preview-img');
+
+            reader.onload = function() {
+                previewImg.src = reader.result;
+                previewImg.style.display = 'block';
+            }
+
+            if(event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);
+                fileName.textContent = event.target.files[0].name;
+            }
+        }
+    </script>
+
+</body>
+</html>

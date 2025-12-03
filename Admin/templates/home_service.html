@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services - Live Tune</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .services-container {
+            padding: 50px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .services-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .service-content {
+            padding: 25px;
+        }
+
+        .service-name {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #222;
+        }
+
+        .service-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .service-details {
+            display: none;
+            padding: 20px;
+            background: #f9f9f9;
+        }
+
+        .service-card.active .service-details {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="services-container">
+        <h2 class="services-title">Our Services</h2>
+
+        <div class="services-grid">
+            {% for home in home_service %}
+            <!-- Service 1 -->
+            <div class="service-card" onclick="toggleDetails(this)">
+               <img src="{{ home.photo.url }}" alt="Music Service" class="service-image">
+                <div class="service-content">
+                    <h3 class="service-name">{{home.name}}</h3>
+                </div>
+
+            </div>
+            {% endfor %}
+
+
+        </div>
+    </section>
+
+    <script>
+        function toggleDetails(card) {
+            card.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

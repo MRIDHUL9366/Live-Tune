@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiveTunes - Kerala Traditional Chendamelam Booking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+        }
+
+        nav {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: white;
+            min-width: 180px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            top: 100%;
+            animation: slideDown 0.3s ease forwards;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 10px 12px;
+            transition: all 0.2s ease;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background: #f1f1f1;
+            padding-left: 20px;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/media/main_homepage.jpg');
+            height: 70vh;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .bands-section {
+            padding: 3rem 5%;
+        }
+
+        .band-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .band-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .band-image-container {
+            height: 250px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .band-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .band-details-container {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .band-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .band-rating {
+            color: #4CAF50;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .band-service {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .band-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .band-price {
+            font-weight: 700;
+            color: #4CAF50;
+            font-size: 1.2rem;
+        }
+
+        .show-more-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius:10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top:-7px;
+        }
+
+        .show-more-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            background: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 5rem;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">LiveTunes</div>
+        <div class="nav-links">
+            <a href="{% url 'main_home' %}">Home</a>
+            <a href="{% url 'about_livetune' %}">About</a>
+            <a href="{% url 'home_service' %}">Service</a>
+            <div class="dropdown">
+                <a href="#login">Login ▼</a>
+                <div class="dropdown-content">
+                    <a href="{% url 'User_Login' %}" style="color: #2e7d32;">User</a>
+                    <a href="{% url 'Admin_Login' %}" style="color: #0277bd;">Admin</a>
+                    <a href="{% url 'vendor_login' %}" style="color: #ef6c00;">Vendor</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="#register">Register ▼</a>
+                <div class="dropdown-content">
+                    <a href="{% url 'user-module' %}" style="color: #2e7d32;">User</a>
+                    <a href="{% url 'vendor-module' %}" style="color: #ef6c00;">Vendor</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div>
+            <h1 style="font-size: 3rem; margin-bottom: 1rem;">Experience the Rhythm of Kerala</h1>
+            <p style="font-size: 1.2rem;">Book Traditional Chendamelam Performances for Your Events</p>
+            <a href="#bands-section"><button style="margin-top: 30px; padding: 15px 40px; background: #4CAF50; color: white; border: none; border-radius: 30px; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s ease;">
+                Explore Groups
+            </button></a>
+        </div>
+    </div>
+
+    <div class="bands-section" id="bands-section">
+        <h2>Featured Chendamelam Groups</h2>
+        <div class="band-grid">
+
+            {% for vendor in all_vendors %}
+    <div class="band-card">
+        <div class="band-image-container">
+            {% if vendor.group_photo %}
+                <img src="{{ vendor.group_photo.url }}" class="band-image" alt="{{ vendor.group_name }}">
+            {% else %}
+                <img src="{{ MEDIA_URL }}main_homepage.jpg" class="band-image" alt="Default image">
+            {% endif %}
+        </div>
+        <div class="band-details-container">
+            <h3 class="band-title">{{ vendor.group_name }}</h3>
+
+            <!-- Display Selected Services -->
+            <h4 class="band-service">
+                {% for service_price in vendor.user.vendorserviceprice_set.all %}
+                    {{ service_price.service.name }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    No services selected
+                {% endfor %}
+            </h4>
+
+            <div class="band-meta">
+                <div class="band-rating">
+                {% if vendor.feedback.exists %}
+                    {{ vendor.feedback.first.total_review|floatformat:-1 }}⭐
+                {% else %}
+                    No reviews
+                {% endif %}
+            </div>
+                <button class="show-more-btn" onclick="window.location.href='{% url 'User_Login' %}'">
+                    View Details
+                </button>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+
+
+        </div>
+    </div>
+
+    <footer>
+        <p style="margin-bottom: 1rem;">© 2023 LiveTunes - Kerala Traditional Chendamelam Booking</p>
+        <div class="social-links">
+            <a href="#facebook" style="color: white; margin: 0 1rem;">Facebook</a>
+            <a href="#twitter" style="color: white; margin: 0 1rem;">Twitter</a>
+            <a href="#instagram" style="color: white; margin: 0 1rem;">Instagram</a>
+        </div>
+    </footer>
+</body>
+</html>

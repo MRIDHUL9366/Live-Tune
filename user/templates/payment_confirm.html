@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancelled Bookings</title>
+    <style>
+        /* Global Styles */
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #58a6ff;
+        }
+
+        /* Back Button */
+        .back-btn {
+            background: linear-gradient(45deg, #58a6ff, #1f77d0);
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(45deg, #1f77d0, #0d5db5);
+            transform: scale(1.05);
+        }
+
+        /* Container Grid Layout */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 50px auto 0;
+        }
+
+        /* Card Styling */
+        .card {
+            background: #161b22;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            align-items: center;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 8px 8px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .card h3 {
+            color: #ff9800;
+            font-size: 22px;
+            border-bottom: 2px solid rgba(255, 152, 0, 0.3);
+            padding-bottom: 5px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Booking Details Grid */
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+            font-size: 15px;
+            padding: 10px;
+        }
+
+        .details-grid p {
+            margin: 5px 0;
+            color: #c9d1d9;
+            display: flex;
+            justify-content: space-between;
+            padding: 5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .label {
+            font-weight: bold;
+            color: #f0f0f0;
+        }
+
+        /* Download Button */
+        .download-btn {
+            background: linear-gradient(45deg, #ff9800, #ff5733);
+            color: #fff;
+            border: none;
+            padding: 12px 18px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: inline-block;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+            align-self: center;
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(45deg, #e68900, #ff4500);
+            transform: scale(1.05);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Back Button -->
+    <a href="javascript:history.back()" class="back-btn">← Back</a>
+
+    <h2>Cancelled Bookings</h2>
+
+    <div class="container">
+        {% for booking in cancellation_details %}
+        <div class="card">
+            <h3>{{ booking.event_name }}</h3>
+            <div class="details-grid">
+                <p><span class="label">Name:</span> <span>{{ booking.user.first_name }}</span></p>
+                <p><span class="label">Service:</span> <span>{{ booking.select_service.service.name }}</span></p>
+                <p><span class="label">Vendor:</span> <span>{{ booking.vendor.vendor_name }}</span></p>
+                <p><span class="label">Group:</span> <span>{{ booking.vendor.group_name }}</span></p>
+                <p><span class="label">Booking Date:</span> <span>{{ booking.booking_date }}</span></p>
+                <p><span class="label">Cancellation Date:</span> <span>{{ booking.cancelled_date }}</span></p>
+                <p><span class="label">Amount Paid:</span> <span>₹{{ booking.total_amount }}</span></p>
+                <p><span class="label">Cancellation Charge:</span> <span>₹{{ booking.commission_amount }}</span></p>
+                <p><span class="label">User Return:</span> <span>₹{{ booking.user_amount }}</span></p>
+            </div>
+
+            <!-- Download PDF Button -->
+            <a href="{% url 'generate_pdf' booking.id %}" class="download-btn">Download Statement</a>
+        </div>
+        {% empty %}
+        <p>No cancelled bookings found.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

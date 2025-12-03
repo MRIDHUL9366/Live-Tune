@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Registrations - Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #ecf0f1;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .logo {
+            font-size: 24px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .menu-item {
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .menu-item:hover {
+            background-color: #34495e;
+        }
+
+        .menu-item.active {
+            background-color: #3498db;
+        }
+
+        .menu-item a {
+            color: white;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* Main Content */
+        .main-container {
+            flex: 1;
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        .content-container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Status Badges */
+        .status {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status.pending {
+            background-color: #f1c40f;
+            color: #2c3e50;
+        }
+
+        .status.approved {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .status.rejected {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .approve-btn {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .approve-btn:hover {
+            background-color: #219d54;
+        }
+
+        .reject-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .reject-btn:hover {
+            background-color: #d63c2c;
+        }
+
+        /* Back Button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-1px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                margin-left: 0;
+                padding: 15px;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+            <div class="logo">LiveTunes Admin</div>
+
+            <div class="menu-item">
+                <a href="{% url 'admin_dashboard' %}" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="{% url 'manage_users' %}" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-users"></i> Manage Users
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="{% url 'manage_vendor' %}" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-store"></i> Manage Vendors
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="{% url 'manage_booking' %}" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-calendar-check"></i> Manage Bookings
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="{% url 'payment_refund' %}" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-wallet"></i> Payments & Refunds
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="{% url 'service_management' %}" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-cog"></i> Service Management
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="{% url 'add_announcement' %}" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-comments"></i> Announcement
+                </a>
+            </div>
+
+
+            <!--<div class="menu-item">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-user-cog"></i> Settings
+                </a>
+            </div>--->
+        </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="content-container">
+
+            <h2>Registered User Details</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.user.first_name }}</td>  <!-- Use 'user' inside the loop -->
+                        <td>{{ user.phone }}</td>
+                        <td>{{ user.user.email }}</td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
