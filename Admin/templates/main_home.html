@@ -14,8 +14,10 @@
 
         body {
             background-color: #f8f9fa;
+            overflow-x: hidden;
         }
 
+        /* Navigation Styles */
         nav {
             background: linear-gradient(135deg, #4CAF50, #45a049);
             padding: 1rem 5%;
@@ -30,22 +32,23 @@
 
         .logo {
             color: white;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
+        /* Desktop Navigation */
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
             align-items: center;
         }
 
         .nav-links a {
             color: white;
             text-decoration: none;
-            padding: 0.8rem 1.2rem;
+            padding: 0.6rem 1rem;
             transition: all 0.3s ease;
             border-radius: 5px;
             position: relative;
@@ -54,21 +57,6 @@
         .nav-links a:hover {
             background: rgba(255,255,255,0.15);
             transform: translateY(-2px);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background: white;
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
         }
 
         .dropdown {
@@ -102,9 +90,112 @@
             padding-left: 20px;
         }
 
+        /* Mobile Menu Button */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1001;
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 85%;
+            height: 100vh;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            padding: 80px 20px 30px;
+            transition: right 0.3s ease;
+            z-index: 999;
+            overflow-y: auto;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        }
+
+        .mobile-nav.active {
+            right: 0;
+        }
+
+        .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .mobile-nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-links a:hover {
+            background: rgba(255,255,255,0.1);
+            padding-left: 25px;
+        }
+
+        .mobile-dropdown {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-dropdown-btn {
+            background: none;
+            border: none;
+            color: white;
+            text-align: left;
+            padding: 15px;
+            font-size: 1.1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mobile-dropdown-content {
+            display: none;
+            flex-direction: column;
+            background: rgba(0,0,0,0.1);
+            padding-left: 20px;
+        }
+
+        .mobile-dropdown-content.active {
+            display: flex;
+        }
+
+        .mobile-dropdown-content a {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 998;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Hero Section */
         .hero {
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/media/main_homepage.jpg');
-            height: 70vh;
+            height: 60vh;
             background-size: cover;
             background-position: center;
             display: flex;
@@ -112,32 +203,71 @@
             justify-content: center;
             color: white;
             text-align: center;
-            margin-bottom: 3rem;
+            padding: 0 20px;
+            margin-bottom: 2rem;
         }
 
+        .hero-content h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .hero-content p {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-btn {
+            padding: 12px 30px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hero-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        /* Bands Section */
         .bands-section {
-            padding: 3rem 5%;
+            padding: 2rem 5%;
+        }
+
+        .bands-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
         }
 
         .band-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
-            margin-top: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
         }
 
         .band-card {
             background: white;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             transition: transform 0.3s ease;
             display: flex;
             flex-direction: column;
         }
 
+        .band-card:hover {
+            transform: translateY(-5px);
+        }
+
         .band-image-container {
-            height: 250px;
+            height: 200px;
             width: 100%;
             overflow: hidden;
             position: relative;
@@ -151,14 +281,14 @@
         }
 
         .band-details-container {
-            padding: 1.5rem;
+            padding: 1.2rem;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
 
         .band-title {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             margin-bottom: 0.5rem;
             color: #333;
         }
@@ -166,12 +296,13 @@
         .band-rating {
             color: #4CAF50;
             font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
         }
 
         .band-service {
             color: #666;
-            line-height: 1.6;
+            line-height: 1.5;
+            font-size: 0.95rem;
             margin-bottom: 1rem;
             flex-grow: 1;
         }
@@ -186,21 +317,18 @@
         .band-price {
             font-weight: 700;
             color: #4CAF50;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
 
         .show-more-btn {
             background: #4CAF50;
             color: white;
             border: none;
-            padding: 5px 10px;
-            border-radius:10px;
+            padding: 8px 16px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top:-7px;
+            font-size: 0.95rem;
         }
 
         .show-more-btn:hover {
@@ -208,14 +336,33 @@
             transform: translateY(-2px);
         }
 
+        /* Footer */
         footer {
             background: #4CAF50;
             color: white;
             text-align: center;
-            padding: 2rem;
-            margin-top: 5rem;
+            padding: 2rem 5%;
+            margin-top: 3rem;
         }
 
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Animations */
         @keyframes slideDown {
             from {
                 opacity: 0;
@@ -226,9 +373,122 @@
                 transform: translateY(0);
             }
         }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-links a {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-nav {
+                display: block;
+            }
+
+            .hero {
+                height: 50vh;
+            }
+
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .band-grid {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+
+            .band-image-container {
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .hero {
+                height: 45vh;
+                padding: 0 15px;
+            }
+
+            .hero-content h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero-content p {
+                font-size: 0.95rem;
+            }
+
+            .hero-btn {
+                padding: 10px 25px;
+                font-size: 0.95rem;
+            }
+
+            .bands-section {
+                padding: 1.5rem;
+            }
+
+            .bands-section h2 {
+                font-size: 1.6rem;
+            }
+
+            .band-image-container {
+                height: 160px;
+            }
+
+            .band-details-container {
+                padding: 1rem;
+            }
+
+            footer {
+                padding: 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .social-links {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .hero {
+                height: 40vh;
+            }
+
+            .hero-content h1 {
+                font-size: 1.3rem;
+            }
+
+            .band-grid {
+                gap: 1rem;
+            }
+        }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Navigation -->
     <nav>
         <div class="logo">LiveTunes</div>
         <div class="nav-links">
@@ -251,71 +511,200 @@
                 </div>
             </div>
         </div>
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
     </nav>
 
-    <div class="hero">
-        <div>
-            <h1 style="font-size: 3rem; margin-bottom: 1rem;">Experience the Rhythm of Kerala</h1>
-            <p style="font-size: 1.2rem;">Book Traditional Chendamelam Performances for Your Events</p>
-            <a href="#bands-section"><button style="margin-top: 30px; padding: 15px 40px; background: #4CAF50; color: white; border: none; border-radius: 30px; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s ease;">
-                Explore Groups
-            </button></a>
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-links">
+            <a href="{% url 'main_home' %}">Home</a>
+            <a href="{% url 'about_livetune' %}">About</a>
+            <a href="{% url 'home_service' %}">Service</a>
+
+            <div class="mobile-dropdown">
+                <button class="mobile-dropdown-btn" id="mobileLoginBtn">
+                    Login <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="mobile-dropdown-content" id="mobileLoginContent">
+                    <a href="{% url 'User_Login' %}" style="color: #2e7d32;">User</a>
+                    <a href="{% url 'Admin_Login' %}" style="color: #0277bd;">Admin</a>
+                    <a href="{% url 'vendor_login' %}" style="color: #ef6c00;">Vendor</a>
+                </div>
+            </div>
+
+            <div class="mobile-dropdown">
+                <button class="mobile-dropdown-btn" id="mobileRegisterBtn">
+                    Register <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="mobile-dropdown-content" id="mobileRegisterContent">
+                    <a href="{% url 'user-module' %}" style="color: #2e7d32;">User</a>
+                    <a href="{% url 'vendor-module' %}" style="color: #ef6c00;">Vendor</a>
+                </div>
+            </div>
         </div>
     </div>
 
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Experience the Rhythm of Kerala</h1>
+            <p>Book Traditional Chendamelam Performances for Your Events</p>
+            <button class="hero-btn" onclick="document.getElementById('bands-section').scrollIntoView({behavior: 'smooth'})">
+                Explore Groups
+            </button>
+        </div>
+    </div>
+
+    <!-- Bands Section -->
     <div class="bands-section" id="bands-section">
         <h2>Featured Chendamelam Groups</h2>
         <div class="band-grid">
-
             {% for vendor in all_vendors %}
-    <div class="band-card">
-        <div class="band-image-container">
-            {% if vendor.group_photo %}
-                <img src="{{ vendor.group_photo.url }}" class="band-image" alt="{{ vendor.group_name }}">
-            {% else %}
-                <img src="{{ MEDIA_URL }}main_homepage.jpg" class="band-image" alt="Default image">
-            {% endif %}
-        </div>
-        <div class="band-details-container">
-            <h3 class="band-title">{{ vendor.group_name }}</h3>
-
-            <!-- Display Selected Services -->
-            <h4 class="band-service">
-                {% for service_price in vendor.user.vendorserviceprice_set.all %}
-                    {{ service_price.service.name }}{% if not forloop.last %}, {% endif %}
-                {% empty %}
-                    No services selected
-                {% endfor %}
-            </h4>
-
-            <div class="band-meta">
-                <div class="band-rating">
-                {% if vendor.feedback.exists %}
-                    {{ vendor.feedback.first.total_review|floatformat:-1 }}⭐
-                {% else %}
-                    No reviews
-                {% endif %}
+            <div class="band-card">
+                <div class="band-image-container">
+                    {% if vendor.group_photo %}
+                        <img src="{{ vendor.group_photo.url }}" class="band-image" alt="{{ vendor.group_name }}">
+                    {% else %}
+                        <img src="{{ MEDIA_URL }}main_homepage.jpg" class="band-image" alt="Default image">
+                    {% endif %}
+                </div>
+                <div class="band-details-container">
+                    <h3 class="band-title">{{ vendor.group_name }}</h3>
+                    <h4 class="band-service">
+                        {% for service_price in vendor.user.vendorserviceprice_set.all %}
+                            {{ service_price.service.name }}{% if not forloop.last %}, {% endif %}
+                        {% empty %}
+                            No services selected
+                        {% endfor %}
+                    </h4>
+                    <div class="band-meta">
+                        <div class="band-rating">
+                            {% if vendor.feedback.exists %}
+                                {{ vendor.feedback.first.total_review|floatformat:-1 }}⭐
+                            {% else %}
+                                No reviews
+                            {% endif %}
+                        </div>
+                        <button class="show-more-btn" onclick="window.location.href='{% url 'User_Login' %}'">
+                            View Details
+                        </button>
+                    </div>
+                </div>
             </div>
-                <button class="show-more-btn" onclick="window.location.href='{% url 'User_Login' %}'">
-                    View Details
-                </button>
-            </div>
-        </div>
-    </div>
-{% endfor %}
-
-
-
+            {% endfor %}
         </div>
     </div>
 
+    <!-- Footer -->
     <footer>
         <p style="margin-bottom: 1rem;">© 2023 LiveTunes - Kerala Traditional Chendamelam Booking</p>
         <div class="social-links">
-            <a href="#facebook" style="color: white; margin: 0 1rem;">Facebook</a>
-            <a href="#twitter" style="color: white; margin: 0 1rem;">Twitter</a>
-            <a href="#instagram" style="color: white; margin: 0 1rem;">Instagram</a>
+            <a href="#facebook">Facebook</a>
+            <a href="#twitter">Twitter</a>
+            <a href="#instagram">Instagram</a>
         </div>
     </footer>
+
+    <script>
+        // Mobile menu functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileNav = document.getElementById('mobileNav');
+        const overlay = document.getElementById('overlay');
+        const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+        const mobileLoginContent = document.getElementById('mobileLoginContent');
+        const mobileRegisterBtn = document.getElementById('mobileRegisterBtn');
+        const mobileRegisterContent = document.getElementById('mobileRegisterContent');
+
+        // Toggle mobile menu
+        menuToggle.addEventListener('click', () => {
+            mobileNav.classList.toggle('active');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // Close menu when clicking overlay
+        overlay.addEventListener('click', () => {
+            mobileNav.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // Toggle dropdowns in mobile menu
+        mobileLoginBtn.addEventListener('click', () => {
+            mobileLoginContent.classList.toggle('active');
+            mobileLoginBtn.querySelector('i').classList.toggle('fa-chevron-down');
+            mobileLoginBtn.querySelector('i').classList.toggle('fa-chevron-up');
+
+            // Close other dropdown if open
+            if (mobileRegisterContent.classList.contains('active')) {
+                mobileRegisterContent.classList.remove('active');
+                mobileRegisterBtn.querySelector('i').classList.remove('fa-chevron-up');
+                mobileRegisterBtn.querySelector('i').classList.add('fa-chevron-down');
+            }
+        });
+
+        mobileRegisterBtn.addEventListener('click', () => {
+            mobileRegisterContent.classList.toggle('active');
+            mobileRegisterBtn.querySelector('i').classList.toggle('fa-chevron-down');
+            mobileRegisterBtn.querySelector('i').classList.toggle('fa-chevron-up');
+
+            // Close other dropdown if open
+            if (mobileLoginContent.classList.contains('active')) {
+                mobileLoginContent.classList.remove('active');
+                mobileLoginBtn.querySelector('i').classList.remove('fa-chevron-up');
+                mobileLoginBtn.querySelector('i').classList.add('fa-chevron-down');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.mobile-nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNav.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Close dropdowns when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (!mobileNav.contains(e.target) && !menuToggle.contains(e.target)) {
+                mobileLoginContent.classList.remove('active');
+                mobileRegisterContent.classList.remove('active');
+
+                // Reset chevron icons
+                document.querySelectorAll('.mobile-dropdown-btn i').forEach(icon => {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                });
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                mobileNav.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
 </body>
 </html>
